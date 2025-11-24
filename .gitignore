@@ -1,2 +1,17 @@
 VibeLoopBE/bin/
 VibeLoopBE/obj/
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+*.tmp
+*.swp

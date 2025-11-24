@@ -23,12 +23,12 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Add Dapper NuGet package to VibeLoopBE.csproj (version 2.1.28 or later)
-- [ ] T002 [P] Add Microsoft.Data.Sqlite NuGet package to VibeLoopBE.csproj (version 8.0.0 or later)
-- [ ] T003 [P] Add Swashbuckle.AspNetCore NuGet package to VibeLoopBE.csproj (if not already present)
-- [ ] T004 Add connection string to appsettings.json: "DefaultConnection": "Data Source=vibeloop.db"
-- [ ] T005 [P] Add vibeloop.db to .gitignore file
-- [ ] T006 [P] Create Data/ folder in VibeLoopBE/ project directory
+- [X] T001 Add Dapper NuGet package to VibeLoopBE.csproj (version 2.1.28 or later)
+- [X] T002 [P] Add Microsoft.Data.Sqlite NuGet package to VibeLoopBE.csproj (version 8.0.0 or later)
+- [X] T003 [P] Add Swashbuckle.AspNetCore NuGet package to VibeLoopBE.csproj (if not already present)
+- [X] T004 Add connection string to appsettings.json: "DefaultConnection": "Data Source=vibeloop.db"
+- [X] T005 [P] Add vibeloop.db to .gitignore file
+- [X] T006 [P] Create Data/ folder in VibeLoopBE/ project directory
 
 **Checkpoint**: NuGet packages restored, configuration ready
 
@@ -40,15 +40,15 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create database schema file in Data/schema.sql with TeamMembers and Goals tables
-- [ ] T008 Create seed data script in Data/seed.sql with 5-10 test team members
-- [ ] T009 [P] Create Models/DBOs/TeamMemberDBO.cs with Id, Name, Mood, MoodUpdatedAt properties
-- [ ] T010 [P] Create Models/DBOs/GoalDBO.cs with Id, MemberId, Description, Completed, CreatedAt, Date properties
-- [ ] T011 [P] Create Models/Responses/ErrorResponse.cs with Error and Message properties
-- [ ] T012 Configure CORS in Program.cs to allow all origins, methods, and headers
-- [ ] T013 Configure Swagger in Program.cs (AddSwaggerGen, UseSwagger, UseSwaggerUI)
-- [ ] T014 Add database initialization logic in Program.cs to run schema.sql and seed.sql on startup
-- [ ] T015 Register IDbConnection as scoped service in Program.cs using SqliteConnection
+- [X] T007 Create database schema file in Data/schema.sql with TeamMembers and Goals tables
+- [X] T008 Create seed data script in Data/seed.sql with 5-10 test team members
+- [X] T009 [P] Create Models/DBOs/TeamMemberDBO.cs with Id, Name, Mood, MoodUpdatedAt properties
+- [X] T010 [P] Create Models/DBOs/GoalDBO.cs with Id, MemberId, Description, Completed, CreatedAt, Date properties
+- [X] T011 [P] Create Models/Responses/ErrorResponse.cs with Error and Message properties
+- [X] T012 Configure CORS in Program.cs to allow all origins, methods, and headers
+- [X] T013 Configure Swagger in Program.cs (AddSwaggerGen, UseSwagger, UseSwaggerUI)
+- [X] T014 Add database initialization logic in Program.cs to run schema.sql and seed.sql on startup
+- [X] T015 Register IDbConnection as scoped service in Program.cs using SqliteConnection
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,16 +62,16 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Create Models/Responses/GoalResponse.cs with Id, MemberId, Description, Completed, CreatedAt, Date properties
-- [ ] T017 [P] [US1] Create Models/Responses/MemberResponse.cs with Id, Name, Mood, MoodUpdatedAt, Goals (List<GoalResponse>) properties
-- [ ] T018 [P] [US1] Create Repositories/IMemberRepository.cs interface with GetAllMembersWithGoalsAsync method
-- [ ] T019 [US1] Implement Repositories/MemberRepository.cs with Dapper multi-mapping query (JOIN TeamMembers and Goals)
-- [ ] T020 [P] [US1] Create Services/IMemberService.cs interface with GetAllMembersAsync method
-- [ ] T021 [US1] Implement Services/MemberService.cs with GetAllMembersAsync method (transforms DBOs to response DTOs)
-- [ ] T022 [US1] Create Controllers/MembersController.cs with [ApiController] and [Route("api/[controller]")] attributes
-- [ ] T023 [US1] Implement GET endpoint in MembersController.cs that calls MemberService.GetAllMembersAsync
-- [ ] T024 [US1] Register IMemberRepository and IMemberService in Program.cs dependency injection container
-- [ ] T025 [US1] Test GET /api/members endpoint with seed data using Swagger UI
+- [X] T016 [P] [US1] Create Models/Responses/GoalResponse.cs with Id, MemberId, Description, Completed, CreatedAt, Date properties
+- [X] T017 [P] [US1] Create Models/Responses/MemberResponse.cs with Id, Name, Mood, MoodUpdatedAt, Goals (List<GoalResponse>) properties
+- [X] T018 [P] [US1] Create Repositories/IMemberRepository.cs interface with GetAllMembersWithGoalsAsync method
+- [X] T019 [US1] Implement Repositories/MemberRepository.cs with Dapper multi-mapping query (JOIN TeamMembers and Goals)
+- [X] T020 [P] [US1] Create Services/IMemberService.cs interface with GetAllMembersAsync method
+- [X] T021 [US1] Implement Services/MemberService.cs with GetAllMembersAsync method (transforms DBOs to response DTOs)
+- [X] T022 [US1] Create Controllers/MembersController.cs with [ApiController] and [Route("api/[controller]")] attributes
+- [X] T023 [US1] Implement GET endpoint in MembersController.cs that calls MemberService.GetAllMembersAsync
+- [X] T024 [US1] Register IMemberRepository and IMemberService in Program.cs dependency injection container
+- [X] T025 [US1] Test GET /api/members endpoint with seed data using Swagger UI
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - read-only dashboard working with seed data
 
@@ -85,17 +85,17 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Create Models/Requests/UpdateMoodRequest.cs with MemberId, Mood, Timestamp properties
-- [ ] T027 [P] [US2] Add UpdateMemberMoodAsync method to Repositories/IMemberRepository.cs interface
-- [ ] T028 [US2] Implement UpdateMemberMoodAsync in Repositories/MemberRepository.cs with UPDATE SQL statement
-- [ ] T029 [P] [US2] Add UpdateMoodAsync method to Services/IMemberService.cs interface
-- [ ] T030 [US2] Implement UpdateMoodAsync in Services/MemberService.cs with validation logic (mood enum check)
-- [ ] T031 [US2] Implement last-write-wins logic in MemberService.cs (compare incoming timestamp with stored MoodUpdatedAt)
-- [ ] T032 [US2] Add POST /mood endpoint to MembersController.cs that accepts UpdateMoodRequest
-- [ ] T033 [US2] Add validation for required fields (MemberId, Mood, Timestamp) in MembersController.cs
-- [ ] T034 [US2] Add validation for valid mood values ('great', 'good', 'neutral', 'low', 'stressed') in MembersController.cs
-- [ ] T035 [US2] Handle NOT_FOUND error when MemberId doesn't exist in MembersController.cs
-- [ ] T036 [US2] Test POST /api/members/mood endpoint with various mood values using Swagger UI
+- [X] T026 [P] [US2] Create Models/Requests/UpdateMoodRequest.cs with MemberId, Mood, Timestamp properties
+- [X] T027 [P] [US2] Add UpdateMemberMoodAsync method to Repositories/IMemberRepository.cs interface
+- [X] T028 [US2] Implement UpdateMemberMoodAsync in Repositories/MemberRepository.cs with UPDATE SQL statement
+- [X] T029 [P] [US2] Add UpdateMoodAsync method to Services/IMemberService.cs interface
+- [X] T030 [US2] Implement UpdateMoodAsync in Services/MemberService.cs with validation logic (mood enum check)
+- [X] T031 [US2] Implement last-write-wins logic in MemberService.cs (compare incoming timestamp with stored MoodUpdatedAt)
+- [X] T032 [US2] Add POST /mood endpoint to MembersController.cs that accepts UpdateMoodRequest
+- [X] T033 [US2] Add validation for required fields (MemberId, Mood, Timestamp) in MembersController.cs
+- [X] T034 [US2] Add validation for valid mood values ('great', 'good', 'neutral', 'low', 'stressed') in MembersController.cs
+- [X] T035 [US2] Handle NOT_FOUND error when MemberId doesn't exist in MembersController.cs
+- [X] T036 [US2] Test POST /api/members/mood endpoint with various mood values using Swagger UI
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -109,23 +109,23 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 ### Implementation for User Story 3
 
-- [ ] T037 [P] [US3] Create Models/Requests/CreateGoalRequest.cs with MemberId, Description, Date properties
-- [ ] T038 [P] [US3] Create Models/Requests/UpdateGoalRequest.cs with GoalId, Completed properties
-- [ ] T039 [P] [US3] Create Repositories/IGoalRepository.cs interface with CreateGoalAsync and UpdateGoalAsync methods
-- [ ] T040 [US3] Implement Repositories/GoalRepository.cs with INSERT and UPDATE SQL statements using Dapper
-- [ ] T041 [P] [US3] Create Services/IGoalService.cs interface with CreateGoalAsync and UpdateGoalAsync methods
-- [ ] T042 [US3] Implement Services/GoalService.cs with CreateGoalAsync (generate Id, set CreatedAt, Completed=false)
-- [ ] T043 [US3] Implement Services/GoalService.cs with UpdateGoalAsync method
-- [ ] T044 [US3] Create Controllers/GoalsController.cs with [ApiController] and [Route("api/[controller]")] attributes
-- [ ] T045 [US3] Implement POST /api/goals endpoint in GoalsController.cs with validation (description length 3-200, date format YYYY-MM-DD)
-- [ ] T046 [US3] Implement POST /api/goals/update endpoint in GoalsController.cs with validation (goalId exists)
-- [ ] T047 [US3] Handle NOT_FOUND error when GoalId doesn't exist in GoalsController.cs
-- [ ] T048 [US3] Handle NOT_FOUND error when MemberId doesn't exist in GoalsController.cs
-- [ ] T049 [US3] Add validation for description length (3-200 characters) with VALIDATION_ERROR response
-- [ ] T050 [US3] Add validation for date format (YYYY-MM-DD regex) with VALIDATION_ERROR response
-- [ ] T051 [US3] Register IGoalRepository and IGoalService in Program.cs dependency injection container
-- [ ] T052 [US3] Test POST /api/goals endpoint with valid and invalid data using Swagger UI
-- [ ] T053 [US3] Test POST /api/goals/update endpoint to mark goals complete/incomplete using Swagger UI
+- [X] T037 [P] [US3] Create Models/Requests/CreateGoalRequest.cs with MemberId, Description, Date properties
+- [X] T038 [P] [US3] Create Models/Requests/UpdateGoalRequest.cs with GoalId, Completed properties
+- [X] T039 [P] [US3] Create Repositories/IGoalRepository.cs interface with CreateGoalAsync and UpdateGoalAsync methods
+- [X] T040 [US3] Implement Repositories/GoalRepository.cs with INSERT and UPDATE SQL statements using Dapper
+- [X] T041 [P] [US3] Create Services/IGoalService.cs interface with CreateGoalAsync and UpdateGoalAsync methods
+- [X] T042 [US3] Implement Services/GoalService.cs with CreateGoalAsync (generate Id, set CreatedAt, Completed=false)
+- [X] T043 [US3] Implement Services/GoalService.cs with UpdateGoalAsync method
+- [X] T044 [US3] Create Controllers/GoalsController.cs with [ApiController] and [Route("api/[controller]")] attributes
+- [X] T045 [US3] Implement POST /api/goals endpoint in GoalsController.cs with validation (description length 3-200, date format YYYY-MM-DD)
+- [X] T046 [US3] Implement POST /api/goals/update endpoint in GoalsController.cs with validation (goalId exists)
+- [X] T047 [US3] Handle NOT_FOUND error when GoalId doesn't exist in GoalsController.cs
+- [X] T048 [US3] Handle NOT_FOUND error when MemberId doesn't exist in GoalsController.cs
+- [X] T049 [US3] Add validation for description length (3-200 characters) with VALIDATION_ERROR response
+- [X] T050 [US3] Add validation for date format (YYYY-MM-DD regex) with VALIDATION_ERROR response
+- [X] T051 [US3] Register IGoalRepository and IGoalService in Program.cs dependency injection container
+- [X] T052 [US3] Test POST /api/goals endpoint with valid and invalid data using Swagger UI
+- [X] T053 [US3] Test POST /api/goals/update endpoint to mark goals complete/incomplete using Swagger UI
 
 **Checkpoint**: All user stories 1, 2, AND 3 should now be independently functional
 
@@ -139,15 +139,15 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 ### Implementation for User Story 4
 
-- [ ] T054 [P] [US4] Create Models/Requests/DeleteGoalRequest.cs with GoalId property
-- [ ] T055 [P] [US4] Add DeleteGoalAsync method to Repositories/IGoalRepository.cs interface
-- [ ] T056 [US4] Implement DeleteGoalAsync in Repositories/GoalRepository.cs with DELETE SQL statement
-- [ ] T057 [P] [US4] Add DeleteGoalAsync method to Services/IGoalService.cs interface
-- [ ] T058 [US4] Implement DeleteGoalAsync in Services/GoalService.cs
-- [ ] T059 [US4] Implement POST /api/goals/delete endpoint in GoalsController.cs
-- [ ] T060 [US4] Add validation for GoalId exists in GoalsController.cs with NOT_FOUND error handling
-- [ ] T061 [US4] Return success response { "success": true } when deletion completes
-- [ ] T062 [US4] Test POST /api/goals/delete endpoint with valid and invalid goal IDs using Swagger UI
+- [X] T054 [P] [US4] Create Models/Requests/DeleteGoalRequest.cs with GoalId property
+- [X] T055 [P] [US4] Add DeleteGoalAsync method to Repositories/IGoalRepository.cs interface
+- [X] T056 [US4] Implement DeleteGoalAsync in Repositories/GoalRepository.cs with DELETE SQL statement
+- [X] T057 [P] [US4] Add DeleteGoalAsync method to Services/IGoalService.cs interface
+- [X] T058 [US4] Implement DeleteGoalAsync in Services/GoalService.cs
+- [X] T059 [US4] Implement POST /api/goals/delete endpoint in GoalsController.cs
+- [X] T060 [US4] Add validation for GoalId exists in GoalsController.cs with NOT_FOUND error handling
+- [X] T061 [US4] Return success response { "success": true } when deletion completes
+- [X] T062 [US4] Test POST /api/goals/delete endpoint with valid and invalid goal IDs using Swagger UI
 
 **Checkpoint**: All user stories should now be fully functional
 
@@ -157,19 +157,19 @@ All paths relative to `VibeLoopBE/` project directory (existing .NET 8 Web API p
 
 **Purpose**: Final touches for production readiness
 
-- [ ] T063 [P] Create Helpers/DatabaseHelper.cs for connection management utilities (optional)
-- [ ] T064 [P] Create Filters/GlobalExceptionFilter.cs to handle unhandled exceptions with ErrorResponse format
-- [ ] T065 Register GlobalExceptionFilter in Program.cs if created
-- [ ] T066 [P] Verify all error responses follow standardized format: { "error": "CODE", "message": "..." }
-- [ ] T067 [P] Verify all timestamps are returned in ISO 8601 format
-- [ ] T068 [P] Verify all dates are returned in YYYY-MM-DD format
-- [ ] T069 Test concurrent mood updates from multiple clients to verify last-write-wins behavior
-- [ ] T070 [P] Test GET /api/members with empty database returns empty array (not error)
-- [ ] T071 [P] Test all endpoints with missing required fields return INVALID_REQUEST error
-- [ ] T072 [P] Test all endpoints with invalid data return VALIDATION_ERROR with helpful messages
-- [ ] T073 Verify CORS allows requests from frontend application
-- [ ] T074 [P] Review Swagger documentation for all 5 endpoints
-- [ ] T075 Update README.md with quickstart instructions (reference quickstart.md)
+- [X] T063 [P] Create Helpers/DatabaseHelper.cs for connection management utilities (optional)
+- [X] T064 [P] Create Filters/GlobalExceptionFilter.cs to handle unhandled exceptions with ErrorResponse format
+- [X] T065 Register GlobalExceptionFilter in Program.cs if created
+- [X] T066 [P] Verify all error responses follow standardized format: { "error": "CODE", "message": "..." }
+- [X] T067 [P] Verify all timestamps are returned in ISO 8601 format
+- [X] T068 [P] Verify all dates are returned in YYYY-MM-DD format
+- [X] T069 Test concurrent mood updates from multiple clients to verify last-write-wins behavior
+- [X] T070 [P] Test GET /api/members with empty database returns empty array (not error)
+- [X] T071 [P] Test all endpoints with missing required fields return INVALID_REQUEST error
+- [X] T072 [P] Test all endpoints with invalid data return VALIDATION_ERROR with helpful messages
+- [X] T073 Verify CORS allows requests from frontend application
+- [X] T074 [P] Review Swagger documentation for all 5 endpoints
+- [X] T075 Update README.md with quickstart instructions (reference quickstart.md)
 
 **Final Checkpoint**: Production-ready API with all user stories complete and polished
 
