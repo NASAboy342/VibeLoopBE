@@ -5,6 +5,14 @@
 **Status**: Draft  
 **Input**: User description: "v1 Team Daily Goal Tracker with Mood Sync - Backend API for small teams to track daily goals and monitor team morale with mood tracking"
 
+## Clarifications
+
+### Session 2025-11-24
+
+- Q: What structure should error responses follow when validation fails or resources aren't found? → A: Consistent error object with code and message (e.g., `{ "error": "VALIDATION_ERROR", "message": "Goal description must be..." }`)
+- Q: How should the system handle simultaneous mood updates from the same team member (e.g., two devices updating mood at nearly the same time)? → A: Last-write-wins based on timestamp
+- Q: Should the SQLite database file be committed to version control or gitignored with seed data script? → A: Gitignore database file, provide seed data script
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - View Team Daily Goals and Moods (Priority: P1)
@@ -77,7 +85,7 @@ Team members can remove goals that were created by mistake or are no longer rele
 
 ### Edge Cases
 
-- What happens when a team member updates their mood multiple times in quick succession? (System should accept all updates and keep the latest timestamp)
+- What happens when a team member updates their mood multiple times in quick succession? (System uses last-write-wins: accepts all updates and keeps the one with the most recent timestamp value)
 - What happens when someone tries to create a goal with an invalid date format? (System should return validation error specifying YYYY-MM-DD format)
 - What happens when fetching team overview but database is empty? (Return empty array successfully, not an error)
 - What happens when updating goal completion status for a non-existent goal ID? (Return 404 error indicating goal not found)
@@ -115,20 +123,22 @@ Team members can remove goals that were created by mistake or are no longer rele
 
 - **FR-015**: System MUST allow mood to be null when a team member has not yet logged their mood
 - **FR-016**: System MUST replace previous mood value when a team member updates their mood
-- **FR-017**: System MUST set completed=false by default when creating new goals
-- **FR-018**: System MUST record creation timestamp automatically when goals are created
-- **FR-019**: System MUST return success=true when goal deletion completes successfully
+- **FR-017**: System MUST use last-write-wins strategy for concurrent mood updates, accepting the update with the most recent timestamp value
+- **FR-018**: System MUST set completed=false by default when creating new goals
+- **FR-019**: System MUST record creation timestamp automatically when goals are created
+- **FR-020**: System MUST return success=true when goal deletion completes successfully
 
 **Response Format:**
 
-- **FR-020**: System MUST return all timestamps in ISO 8601 format
-- **FR-021**: System MUST return dates in YYYY-MM-DD format
-- **FR-022**: System MUST return appropriate HTTP status codes (200 for success, 400 for validation errors, 404 for not found)
-- **FR-023**: System MUST return error messages that clearly indicate validation failures
+- **FR-021**: System MUST return all timestamps in ISO 8601 format
+- **FR-022**: System MUST return dates in YYYY-MM-DD format
+- **FR-023**: System MUST return appropriate HTTP status codes (200 for success, 400 for validation errors, 404 for not found)
+- **FR-024**: System MUST return error responses as JSON objects with two fields: "error" (error code string) and "message" (human-readable description). Example: `{ "error": "VALIDATION_ERROR", "message": "Goal description must be between 3 and 200 characters" }`
+- **FR-025**: System MUST use consistent error codes across all endpoints: "VALIDATION_ERROR" (400), "NOT_FOUND" (404), "INVALID_REQUEST" (400)
 
 **CORS and Frontend Integration:**
 
-- **FR-024**: System MUST allow cross-origin requests from all domains to support the existing frontend application
+- **FR-026**: System MUST allow cross-origin requests from all domains to support the existing frontend application
 
 ### Key Entities
 
@@ -155,7 +165,9 @@ Team members can remove goals that were created by mistake or are no longer rele
 
 ## Assumptions
 
-- Team members are pre-populated in the system (member management/registration is out of scope for v1)
+- Team members are pre-populated in the system via seed data script (member management/registration is out of scope for v1)
+- SQLite database file is gitignored and not committed to version control
+- Seed data script provides test team members for local development
 - No authentication or authorization required for v1 (all endpoints are publicly accessible)
 - No historical mood tracking (only current mood is stored and displayed)
 - Goals are not time-ordered within a member's goal list (frontend handles sorting if needed)
