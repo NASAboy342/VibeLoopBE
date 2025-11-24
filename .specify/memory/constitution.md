@@ -1,50 +1,131 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+  ============================================================================
+  SYNC IMPACT REPORT
+  ============================================================================
+  Version Change: TEMPLATE → 1.0.0 (MAJOR - Initial constitution ratification)
+  
+  Modified Principles:
+  - NEW: I. .NET 8 & Dapper ORM (Data access architecture)
+  - NEW: II. SQLite Local Database (Database choice and management)
+  - NEW: III. MVC Folder Structure (Code organization)
+  - NEW: IV. Naming Conventions (File and class naming standards)
+  - NEW: V. CORS Policy (Security and cross-origin access)
+  
+  Added Sections:
+  - Technology Stack (Section 2)
+  - Code Organization Standards (Section 3)
+  - Governance rules established
+  
+  Removed Sections:
+  - None (initial creation)
+  
+  Templates Requiring Updates:
+  - ✅ plan-template.md (verified - Constitution Check section is flexible)
+  - ✅ spec-template.md (verified - user stories are architecture-agnostic)
+  - ✅ tasks-template.md (verified - task structure adapts to project type)
+  - ✅ checklist-template.md (verified - template is generic)
+  
+  Follow-up TODOs:
+  - None - All placeholders filled
+  
+  Notes:
+  - First constitution version for VibeLoopBE project
+  - Ratification date set to today (2025-11-24)
+  - All templates reviewed and confirmed compatible with .NET/Dapper/SQLite stack
+  ============================================================================
+-->
+
+# VibeLoopBE Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. .NET 8 & Dapper ORM
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**MUST** use .NET 8 Web API framework for all backend development; **MUST** use Dapper for all data access operations; **MUST NOT** use Entity Framework or any ORM other than Dapper.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: Dapper provides lightweight, high-performance data access with direct SQL control, avoiding the complexity and overhead of Entity Framework while maintaining testability and maintainability.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. SQLite Local Database
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**MUST** use SQLite as the database engine with local file storage; Database file **MUST** be stored locally and version-controlled schema migrations **MUST** be implemented for reproducibility.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Rationale**: SQLite provides zero-configuration, embedded database capabilities suitable for local development and deployment scenarios, with excellent .NET support and portability.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. MVC Folder Structure
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**MUST** organize code following MVC architectural pattern with these top-level folders:
+- `Controllers/` - API endpoints and request routing
+- `Services/` - Business logic layer
+- `Models/` - Data models (DTOs, requests, responses, DBOs)
+- `Repositories/` - Data access layer (Dapper implementations)
+- `Helpers/` - Utility and helper functions
+- `Filters/` - Action filters, exception filters, authorization filters
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: Clear separation of concerns enables maintainability, testability, and allows multiple developers to work on different layers without conflicts.
+
+### IV. Naming Conventions
+
+**MUST** follow these naming standards:
+
+Request/Response Models:
+- Separate by folder: `Models/Requests/` and `Models/Responses/`
+- Pattern: `[Action]Request.cs`, `[Action]Response.cs`
+- Example: `CreateUserRequest.cs`, `GetUserResponse.cs`
+
+Database Models:
+- Folder: `Models/DBOs/`
+- Pattern: `[Object]DBO.cs`
+- Example: `UserDBO.cs`, `ProductDBO.cs`
+
+**Rationale**: Consistent naming eliminates ambiguity, improves code discoverability, and signals the purpose of each class at a glance.
+
+### V. CORS Policy
+
+**MUST** configure CORS to allow all domains including localhost for development; Production deployment **SHOULD** restrict to specific trusted origins.
+
+**Rationale**: Enables frictionless local development and testing across different ports/domains while preserving the ability to lock down production environments.
+
+## Technology Stack
+
+**Framework**: .NET 8 Web API  
+**ORM**: Dapper (NON-NEGOTIABLE)  
+**Database**: SQLite (local file-based)  
+**API Documentation**: Swagger/OpenAPI (via Swashbuckle)  
+**Dependency Injection**: Built-in .NET DI container  
+
+**Architecture Pattern**: MVC with Repository pattern for data access  
+**Testing Framework**: xUnit (recommended) or NUnit  
+
+## Code Organization Standards
+
+**File Placement**:
+- Controllers **MUST** inherit from `ControllerBase` and use `[ApiController]` attribute
+- Services **MUST** be interface-based for dependency injection
+- Repositories **MUST** abstract Dapper calls behind interfaces
+- All DBOs **MUST** map directly to database tables/views
+
+**Dependency Flow**: Controllers → Services → Repositories → Database  
+- Controllers **MUST NOT** directly call Repositories
+- Services **MUST NOT** contain data access code (use Repositories)
+
+**Configuration**:
+- Database connection string **MUST** be in `appsettings.json`
+- Environment-specific overrides **MUST** use `appsettings.Development.json`
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices and standards. All feature implementations, code reviews, and architectural decisions **MUST** comply with these principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Amendment Process**:
+1. Proposed changes **MUST** be documented with rationale
+2. Version number **MUST** be incremented following semantic versioning
+3. All affected templates and documentation **MUST** be updated
+4. Migration plan **MUST** be provided for breaking changes
+
+**Compliance Verification**:
+- All pull requests **MUST** verify adherence to naming conventions
+- Code reviews **MUST** check for proper folder structure
+- Database access **MUST** exclusively use Dapper
+- CORS configuration **MUST** be reviewed before production deployment
+
+**Version**: 1.0.0 | **Ratified**: 2025-11-24 | **Last Amended**: 2025-11-24

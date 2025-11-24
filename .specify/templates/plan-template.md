@@ -78,6 +78,18 @@ backend/
 
 frontend/
 ├── src/
+
+# [REMOVE IF UNUSED] Option 3: .NET MVC Web API (for VibeLoopBE and similar .NET projects)
+Controllers/          # API endpoints and routing
+Services/             # Business logic layer
+Models/               # Data models
+├── Requests/         # [Action]Request.cs
+├── Responses/        # [Action]Response.cs
+└── DBOs/             # [Object]DBO.cs (database objects)
+Repositories/         # Data access with Dapper
+Helpers/              # Utility functions
+Filters/              # Action/exception filters
+tests/                # Unit and integration tests
 │   ├── components/
 │   ├── pages/
 │   └── services/
