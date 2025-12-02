@@ -1,0 +1,280 @@
+openapi: 3.0.3
+info:
+  title: VibeLoopBE Goals API - Background Color Extension
+  description: |
+    API contract for Goal background color feature. Extends existing Goals API endpoints
+    to support RGB color assignment for visual organization.
+  version: 1.1.0
+  contact:
+    name: VibeLoopBE Team
+
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+
+paths:
+  /goals:
+    post:
+      summary: Create a new goal with optional background color
+      description: |
+        Creates a new goal for a team member. Background color is optional and defaults
+        to white 'rgb(255, 255, 255)' if not provided. Color must be in rgb(R, G, B) format
+        with values 0-255.
+      operationId: createGoal
+      tags:
+        - Goals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGoalRequest'
+            examples:
+              withColor:
+                summary: Goal with custom color
+                value:
+                  memberId: "550e8400-e29b-41d4-a716-446655440000"
+                  description: "Complete API documentation"
+                  date: "2025-12-03"
+                  bgColor: "rgb(52, 152, 219)"
+              withoutColor:
+                summary: Goal with default white color
+                value:
+                  memberId: "550e8400-e29b-41d4-a716-446655440000"
+                  description: "Review pull requests"
+                  date: "2025-12-03"
+              flexibleSpacing:
+                summary: Color with flexible spacing
+                value:
+                  memberId: "550e8400-e29b-41d4-a716-446655440000"
+                  description: "Team standup"
+                  date: "2025-12-03"
+                  bgColor: "rgb(255,0,0)"
+      responses:
+        '200':
+          description: Goal created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  goalId:
+                    type: string
+                    format: uuid
+                    example: "660e8400-e29b-41d4-a716-446655440001"
+        '400':
+          description: Invalid request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidColorFormat:
+                  summary: Invalid color format
+                  value:
+                    error: "INVALID_COLOR_FORMAT"
+                    message: "Color must be in format 'rgb(R, G, B)' where R, G, B are numbers 0-255"
+                invalidColorRange:
+                  summary: RGB value out of range
+                  value:
+                    error: "INVALID_COLOR_RANGE"
+                    message: "RGB values must be between 0 and 255"
+                missingDescription:
+                  summary: Missing required field
+                  value:
+                    error: "INVALID_REQUEST"
+                    message: "Description is required"
+        '404':
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "NOT_FOUND"
+                message: "Member not found"
+
+  /goals/update:
+    post:
+      summary: Update an existing goal
+      description: |
+        Updates a goal's properties. Background color is optional - if not provided, 
+        the existing color is preserved. If provided, must be valid rgb(R, G, B) format.
+      operationId: updateGoal
+      tags:
+        - Goals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGoalRequest'
+            examples:
+              updateColor:
+                summary: Update only the color
+                value:
+                  goalId: "660e8400-e29b-41d4-a716-446655440001"
+                  bgColor: "rgb(46, 204, 113)"
+              updateWithoutColor:
+                summary: Update without changing color
+                value:
+                  goalId: "660e8400-e29b-41d4-a716-446655440001"
+                  description: "Updated description"
+                  completed: true
+              updateMultiple:
+                summary: Update description and color
+                value:
+                  goalId: "660e8400-e29b-41d4-a716-446655440001"
+                  description: "Completed API documentation"
+                  completed: true
+                  bgColor: "rgb(39, 174, 96)"
+      responses:
+        '200':
+          description: Goal updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Invalid request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Goal not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "NOT_FOUND"
+                message: "Goal not found"
+
+components:
+  schemas:
+    CreateGoalRequest:
+      type: object
+      required:
+        - memberId
+        - description
+        - date
+      properties:
+        memberId:
+          type: string
+          format: uuid
+          description: ID of the team member who owns this goal
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        description:
+          type: string
+          minLength: 3
+          maxLength: 200
+          description: Goal description text
+          example: "Complete API documentation"
+        date:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: Target date for the goal (YYYY-MM-DD)
+          example: "2025-12-03"
+        bgColor:
+          type: string
+          pattern: '^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$'
+          description: |
+            Optional background color in rgb(R, G, B) format. R, G, B must be 0-255.
+            Flexible spacing accepted. Defaults to white 'rgb(255, 255, 255)' if not provided.
+          example: "rgb(52, 152, 219)"
+          nullable: true
+
+    UpdateGoalRequest:
+      type: object
+      required:
+        - goalId
+      properties:
+        goalId:
+          type: string
+          format: uuid
+          description: ID of the goal to update
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        description:
+          type: string
+          minLength: 3
+          maxLength: 200
+          description: Updated goal description (optional)
+          example: "Updated description"
+          nullable: true
+        completed:
+          type: boolean
+          description: Updated completion status (optional)
+          example: true
+          nullable: true
+        bgColor:
+          type: string
+          pattern: '^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$'
+          description: |
+            Optional updated background color. If not provided, existing color is preserved.
+            Must be valid rgb(R, G, B) format with values 0-255.
+          example: "rgb(46, 204, 113)"
+          nullable: true
+
+    GoalResponse:
+      type: object
+      description: Goal data returned from API (used in future GET endpoints)
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        memberId:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        description:
+          type: string
+          example: "Complete API documentation"
+        completed:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-12-02T10:30:00.000Z"
+        date:
+          type: string
+          format: date
+          example: "2025-12-03"
+        bgColor:
+          type: string
+          description: Background color in normalized rgb(R, G, B) format with single spaces
+          example: "rgb(52, 152, 219)"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code for programmatic handling
+          enum:
+            - INVALID_REQUEST
+            - INVALID_COLOR_FORMAT
+            - INVALID_COLOR_RANGE
+            - NOT_FOUND
+          example: "INVALID_COLOR_FORMAT"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Color must be in format 'rgb(R, G, B)' where R, G, B are numbers 0-255"
+
+tags:
+  - name: Goals
+    description: Goal management operations with background color support
